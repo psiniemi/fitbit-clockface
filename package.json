@@ -1,0 +1,32 @@
+{
+  "devDependencies": {
+    "@fitbit/sdk": "~6.0.0"
+  },
+  "fitbit": {
+    "appUUID": "d403c1ce-00d5-4942-a6a2-cfbd67c68489",
+    "appType": "clockface",
+    "appDisplayName": "my_first_clock",
+    "iconFile": "resources/icon.png",
+    "wipeColor": "",
+    "requestedPermissions": [
+      "access_activity",
+      "access_internet",
+      "access_location",
+      "access_heart_rate",
+      "access_user_profile",
+      "run_background",
+      "access_exercise",
+      "access_calendar",
+      "access_sleep"
+    ],
+    "buildTargets": [
+      "vulcan"
+    ],
+    "i18n": {
+      "en-US": {
+        "name": "my_first_clock"
+      }
+    },
+    "defaultLanguage": "en-US"
+  }
+}

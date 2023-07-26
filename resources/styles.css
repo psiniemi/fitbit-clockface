@@ -1,0 +1,58 @@
+#view {
+  fill: white;
+}
+text {
+  font-family: Seville-Book-Condensed;
+  font-size: 50;
+}
+.background {
+  viewport-fill: white;
+}
+#clock {
+  font-size: 90;
+  font-family: Seville-Bold-Condensed;
+  text-length: 50;
+  text-anchor: middle;
+  x: 50%;
+  y: 50%+25;
+  fill: white;
+}
+
+#date {
+  font-size: 50;
+  font-family: Colfax-Bold;
+  text-length: 50;
+  text-anchor: middle;
+  x: 50%;
+  y: 50%+80;
+  fill: white;
+}
+
+#step-data {
+  text-length: 60;
+  fill: yellow;
+  text-anchor: start;
+  y: 17%;
+  x: 8%;
+}
+
+#heart-data {
+  text-length: 50;
+  fill: yellow;
+  text-anchor: start;
+  y: 93%;
+  x: 8%;
+}
+#temperature {
+  text-length: 50;
+  fill: yellow;
+  text-anchor: end;
+  y: 17%;
+  x: 93%;
+}
+#weather {
+  opacity: 1;
+  fill: white;
+  display: inline;
+  y: 17%;
+}

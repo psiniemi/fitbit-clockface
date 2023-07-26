@@ -1,0 +1,10 @@
+<svg class="background" id="view" pointer-events="visible">
+  <image id="background" href="background.png" pointer-events="visible" />
+  <rect id="battery" width="100%" height="17" fill="#00ff00" />
+  <text id="step-data" class="steps-label" />
+  <text id="clock" class="clock-label" />
+  <text id="date" class="date-label" />
+  <text id="heart-data" class="heart-label" />
+  <image id="weather" href="01d.png" height="51" width="51" x="180" y="14" fill="yellow" load="sync" />
+  <text id="temperature" class="temperature" />
+</svg>
