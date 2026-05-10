@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "build": "node --disable-warning=DEP0180 ./node_modules/@fitbit/sdk/bin/fitbit-build.js"
+  },
   "devDependencies": {
     "@fitbit/sdk": "^6.1.0"
   },
@@ -27,8 +30,5 @@
       }
     },
     "defaultLanguage": "en-US"
-  },
-  "scripts": {
-    "build": "fitbit-build"
   }
 }
