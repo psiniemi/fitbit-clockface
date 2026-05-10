@@ -3,6 +3,7 @@ import { settingsStorage } from "settings";
 import { device } from "peer";
 import { Image } from "image";
 import { outbox } from "file-transfer";
+import { peerSocket } from "messaging";
 
 import Weather from '../common/weather/phone';
 
@@ -22,17 +23,41 @@ settingsStorage.addEventListener("change", (evt) => {
     weather.setTemperatureUnit(unit);
   } else if (evt.key === "background-image" && evt.newValue) {
     sendBackgroundImage(evt.newValue);
+  } else if (evt.key && evt.key.indexOf("corner-") === 0) {
+    sendCorners();
   }
 });
 
+peerSocket.addEventListener("open", () => {
+  sendCorners();
+});
+
 function currentTemperatureUnit() {
-  const raw = settingsStorage.getItem("temperatureUnit");
-  if (!raw) return "celsius";
+  return readSelect("temperatureUnit", "celsius");
+}
+
+function readSelect(key, defaultValue) {
+  const raw = settingsStorage.getItem(key);
+  if (!raw) return defaultValue;
   try {
-    return JSON.parse(raw).values[0].value;
-  } catch (e) {
-    return "celsius";
-  }
+    const parsed = JSON.parse(raw);
+    if (parsed && parsed.values && parsed.values[0] && parsed.values[0].value) {
+      return parsed.values[0].value;
+    }
+  } catch (e) {}
+  return defaultValue;
+}
+
+function sendCorners() {
+  if (peerSocket.readyState !== peerSocket.OPEN) return;
+  const corners = {
+    TL: readSelect("corner-tl", "steps"),
+    TR: readSelect("corner-tr", "weather"),
+    BL: readSelect("corner-bl", "heartRate"),
+    BR: readSelect("corner-br", "activeMinutes")
+  };
+  console.log("sending corners: " + JSON.stringify(corners));
+  peerSocket.send({ corners_msg: corners });
 }
 
 function sendBackgroundImage(settingsValue) {

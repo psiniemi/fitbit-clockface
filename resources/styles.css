@@ -28,30 +28,13 @@ text {
   fill: white;
 }
 
-#step-data {
+.corner-l {
+  fill: yellow;
+  text-anchor: start;
   text-length: 60;
-  fill: yellow;
-  text-anchor: start;
-  y: 17%;
-  x: 8%;
 }
-
-#heart-data {
-  text-length: 50;
-  fill: yellow;
-  text-anchor: start;
-  y: 93%;
-  x: 8%;
-}
-#temperature {
-  text-length: 50;
+.corner-r {
   fill: yellow;
   text-anchor: end;
-  x: 265;
-  y: 60;
-}
-#weather {
-  opacity: 1;
-  fill: white;
-  display: inline;
+  text-length: 60;
 }
