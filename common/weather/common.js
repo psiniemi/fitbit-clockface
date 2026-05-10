@@ -26,7 +26,7 @@ export function iconForCondition(condition, isDay) {
     case "MostlyCloudyDay":
       return "03d";
     case "MostlyCloudyNight":
-      return "03n";
+      return "1232n";
     case "Cloudy":
     case "Overcast":
       return "04" + dn;
