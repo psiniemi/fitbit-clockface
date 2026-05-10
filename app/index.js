@@ -7,7 +7,6 @@ import { peerSocket } from "messaging";
 
 import * as util from "../common/utils";
 import Weather from '../common/weather/device';
-import { iconForCondition } from '../common/weather/common';
 
 import { today } from "user-activity";
 import { HeartRateSensor } from "heart-rate";
@@ -152,9 +151,7 @@ function renderCorner(slot) {
       break;
     case "weather":
       if (cachedWeather) {
-        const hour  = new Date().getHours();
-        const isDay = hour >= 6 && hour < 19;
-        icon.href = iconForCondition(cachedWeather.condition, isDay) + ".png";
+        icon.href = cachedWeather.condition + ".png";
         icon.x = layout.icon.x;
         icon.y = layout.icon.y;
         icon.style.display = "inline";

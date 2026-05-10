@@ -5,10 +5,10 @@
   <text id="clock" class="clock-label" />
   <text id="date" class="date-label" />
 
-  <image id="icon-tl" href="01d.png" height="51" width="51" load="sync" display="none" />
-  <image id="icon-tr" href="01d.png" height="51" width="51" load="sync" display="none" />
-  <image id="icon-bl" href="01d.png" height="51" width="51" load="sync" display="none" />
-  <image id="icon-br" href="01d.png" height="51" width="51" load="sync" display="none" />
+  <image id="icon-tl" href="SunnyDay.png" height="51" width="51" load="sync" display="none" />
+  <image id="icon-tr" href="SunnyDay.png" height="51" width="51" load="sync" display="none" />
+  <image id="icon-bl" href="SunnyDay.png" height="51" width="51" load="sync" display="none" />
+  <image id="icon-br" href="SunnyDay.png" height="51" width="51" load="sync" display="none" />
 
   <text id="corner-tl" class="corner-l" />
   <text id="corner-tr" class="corner-r" />

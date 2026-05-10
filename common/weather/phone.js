@@ -1,9 +1,18 @@
 import { peerSocket } from "messaging";
 import { outbox } from "file-transfer";
 import * as cbor from "cbor";
-import weather from "weather";
+import weather, { WeatherCondition } from "weather";
 
 import { WEATHER_MESSAGE_KEY, WEATHER_DATA_FILE, WEATHER_ERROR_FILE } from './common.js';
+
+// The runtime returns weatherCondition as a numeric enum value
+// (SunnyDay=1, MostlySunnyDay=2, …). Build the inverse lookup once so the
+// payload sent to the device carries the string name that matches our
+// resource filenames (e.g. "MostlySunnyDay.png").
+const CONDITION_NAMES = {};
+for (const name in WeatherCondition) {
+  CONDITION_NAMES[WeatherCondition[name]] = name;
+}
 
 export default class Weather {
 
@@ -55,11 +64,12 @@ export default class Weather {
           throw new Error("No location data");
         }
         const loc = data.locations[0];
-        console.log("weather: got " + loc.name + " " + loc.currentWeather.temperature + " " + loc.currentWeather.weatherCondition);
+        const conditionName = CONDITION_NAMES[loc.currentWeather.weatherCondition] || "SunnyDay";
+        console.log("weather: got " + loc.name + " " + loc.currentWeather.temperature + " " + conditionName);
         return {
           temperature:     loc.currentWeather.temperature,
           temperatureUnit: unit,
-          condition:       loc.currentWeather.weatherCondition,
+          condition:       conditionName,
           location:        loc.name,
           timestamp:       Date.now()
         };
