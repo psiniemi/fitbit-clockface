@@ -47,12 +47,11 @@ text {
   text-length: 50;
   fill: yellow;
   text-anchor: end;
-  y: 17%;
-  x: 93%;
+  x: 265;
+  y: 60;
 }
 #weather {
   opacity: 1;
   fill: white;
   display: inline;
-  y: 17%;
 }

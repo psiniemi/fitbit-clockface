@@ -5,6 +5,6 @@
   <text id="clock" class="clock-label" />
   <text id="date" class="date-label" />
   <text id="heart-data" class="heart-label" />
-  <image id="weather" href="01d.png" height="51" width="51" x="180" y="14" fill="yellow" load="sync" />
+  <image id="weather" href="01d.png" height="51" width="51" x="270" y="17" load="sync" />
   <text id="temperature" class="temperature" />
 </svg>

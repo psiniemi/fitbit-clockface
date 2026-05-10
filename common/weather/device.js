@@ -3,53 +3,51 @@ import { WEATHER_MESSAGE_KEY, WEATHER_DATA_FILE, WEATHER_ERROR_FILE } from './co
 import { inbox } from "file-transfer";
 import { readFileSync } from "fs";
 
-const MY_FILE_NAMES = [WEATHER_DATA_FILE,WEATHER_ERROR_FILE]
+const MY_FILE_NAMES = [WEATHER_DATA_FILE, WEATHER_ERROR_FILE];
 
-let otherFiles = []
-let myFiles    = []
+let otherFiles = [];
+let myFiles    = [];
 
 const prevNextFile = inbox.nextFile;
 
 inbox.nextFile = function() {
-  if(otherFiles.length > 0) {
-    return otherFiles.pop()
+  if (otherFiles.length > 0) {
+    return otherFiles.pop();
   }
-  
-  var fileName
+
+  var fileName;
   while (fileName = prevNextFile()) {
     if (MY_FILE_NAMES.indexOf(fileName) > -1) {
-      myFiles.push(fileName)
+      myFiles.push(fileName);
     }
     else {
-      return fileName
+      return fileName;
     }
   }
-  return undefined
-}
+  return undefined;
+};
 
 const getCustomFile = function() {
-  if(myFiles.length > 0) {
-    return myFiles.pop()
+  if (myFiles.length > 0) {
+    return myFiles.pop();
   }
-  
-  var fileName
+
+  var fileName;
   while (fileName = prevNextFile()) {
     if (MY_FILE_NAMES.indexOf(fileName) > -1) {
-      return fileName
+      return fileName;
     }
-    otherFiles.push(fileName)
+    otherFiles.push(fileName);
   }
-  return undefined
-}
+  return undefined;
+};
 
 export default class Weather {
-  
+
   constructor() {
-    this._apiKey = '';
-    this._provider = 'owm';
-    this._feelsLike = true;
     this._maximumAge = 300000;
-    
+    this._pendingFetch = false;
+
     try {
       this._weather = readFileSync(WEATHER_DATA_FILE, "cbor");
     } catch (n) {
@@ -58,57 +56,52 @@ export default class Weather {
 
     this.onerror = undefined;
     this.onsuccess = undefined;
-    
-    // Event occurs when new file(s) are received
+
     inbox.addEventListener("newfile", (event) => {
       var fileName = getCustomFile();
       if (fileName === WEATHER_DATA_FILE) {
         this._weather = readFileSync(fileName, "cbor");
-        if(this.onsuccess) this.onsuccess(this._weather);
+        if (this.onsuccess) this.onsuccess(this._weather);
       }
       else if (fileName === WEATHER_ERROR_FILE) {
-        if(this.onerror) this.onerror(readFileSync(fileName, "cbor").error);
+        if (this.onerror) this.onerror(readFileSync(fileName, "cbor").error);
+      }
+    });
+
+    peerSocket.addEventListener("open", () => {
+      if (this._pendingFetch) {
+        this._pendingFetch = false;
+        this._sendFetchMessage();
       }
     });
   }
-  
-  setApiKey(apiKey) {
-    this._apiKey = apiKey;
+
+  _sendFetchMessage() {
+    let message = {};
+    message[WEATHER_MESSAGE_KEY] = 1;
+    peerSocket.send(message);
   }
-  
-  setProvider(provider) {
-    this._provider = provider;
-  }
-  
-  setFeelsLike(feelsLike) {
-    this._feelsLike = feelsLike;
-  }
-  
+
   setMaximumAge(maximumAge) {
     this._maximumAge = maximumAge;
   }
-  
+
   getData() {
     return this._weather;
   }
-  
+
   fetch() {
-    let now = new Date().getTime();
-    if(this._weather !== undefined && this._weather.timestamp !== undefined && (now - this._weather.timestamp < this._maximumAge)) {
-      // return previous weather if the maximum age is not reached
-      if(this.onsuccess) this.onsuccess(this._weather);
+    let now = Date.now();
+    if (this._weather !== undefined && this._weather.timestamp !== undefined && (now - this._weather.timestamp < this._maximumAge)) {
+      if (this.onsuccess) this.onsuccess(this._weather);
       return this._weather;
     }
-    
+
     if (peerSocket.readyState === peerSocket.OPEN) {
-      // Send a command to the companion
-      let message = {};
-      let params = { apiKey : this._apiKey, provider : this._provider, feelsLike : this._feelsLike };
-      message[WEATHER_MESSAGE_KEY] = params;
-      peerSocket.send(message);
+      this._sendFetchMessage();
     }
     else {
-      if(this.onerror) this.onerror("No connection with the companion");
+      this._pendingFetch = true;
     }
     return this._weather;
   }

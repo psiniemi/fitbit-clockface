@@ -3,41 +3,34 @@ import document from "document";
 
 import * as util from "../common/utils";
 import Weather from '../common/weather/device';
+import { iconForCondition } from '../common/weather/common';
 
 import { today } from "user-activity";
 import { HeartRateSensor } from "heart-rate";
-import { vibration } from "haptics";
 import { battery, charger } from "power";
-import { colorGradient } from "../common/gradient";
+import { colorGradient } from "../common/gradient";
 
-// Update the clock every minute
 clock.granularity = "seconds";
 
-const weather_api_key = "0e4c66ae67d6526d3a47354255999771";
 let weather = new Weather();
 
 let showWeather = function(data) {
   if (data) {
-    document.getElementById("weather").href = data.icon + ".png";
+    const hour = new Date().getHours();
+    const isDay = hour >= 6 && hour < 19;
+    document.getElementById("weather").href = iconForCondition(data.condition, isDay) + ".png";
     document.getElementById("temperature").text = "" + Math.round(data.temperatureC) + "°C";
   }
 }
 
-// Display the weather data received from the companion
-weather.onsuccess = showWeather
+weather.onsuccess = showWeather;
 
 weather.onerror = (error) => {
-  console.log("Weather error " + JSON.stringify(error))
+  console.log("Weather error " + JSON.stringify(error));
 }
 
-weather.setProvider("owm"); 
-weather.setApiKey(weather_api_key);
-weather.setMaximumAge(300000); 
-weather.setFeelsLike(true);
+weather.setMaximumAge(300000);
 
-// Get a handle on the <text> element
-let image = document.getElementById("background");
-let view =  document.getElementById("view");
 let clockLabel = document.getElementById("clock");
 let dateLabel = document.getElementById("date");
 let stepData = document.getElementById("step-data");
@@ -49,7 +42,7 @@ hrm.onreading = function() {
   heartData.text = "" + hrm.heartRate;
 }
 hrm.start();
-// Update the <text> element with the current time
+
 function updateClock() {
   let today = new Date();
   let hours = util.monoDigits(today.getHours());
@@ -57,7 +50,7 @@ function updateClock() {
   let secs = util.monoDigits(today.getSeconds())
   let days = today.getDate();
   let months = today.getMonth() + 1;
-  
+
   clockLabel.text = `${hours}:${mins}:${secs}`;
   dateLabel.text = `${days}|${months}`;
 }
@@ -74,7 +67,6 @@ function refreshCharge() {
       color = colorGradient((battery.chargeLevel) / 100, "#cc0000", "#cccc00" , "#00cc00");
     }
   }
-  console.log("Color is: " + color);
   btry.width = Math.floor((battery.chargeLevel * 348) / 100);
   btry.style.fill = color;
 }
@@ -82,10 +74,8 @@ let fetchWeather = function() {
   weather.fetch();
 }
 
-// Update the clock every tick event
 clock.ontick = () => updateClock();
 charger.onchange = () => refreshCharge();
-//setTimeOut(refreshData, 500);
 refreshSteps();
 refreshCharge();
 weather.fetch();
