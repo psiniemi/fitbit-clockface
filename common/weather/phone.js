@@ -17,9 +17,11 @@ for (const name in WeatherCondition) {
 export default class Weather {
 
   constructor() {
-    this._maximumAge = 300000;
+    this._maximumAge = 300000;        // 5 min — re-use cached success without re-calling the API
+    this._errorCooldownMs = 60000;    // 1 min — after a failure, don't retry the API
     this._temperatureUnit = "celsius";
     this._weather = undefined;
+    this._lastErrorAt = 0;
 
     this.onsuccess = undefined;
     this.onerror = undefined;
@@ -77,9 +79,29 @@ export default class Weather {
   }
 
   _fetchAndSend() {
+    const now = Date.now();
+
+    // Success cache — re-send last fresh payload without re-hitting the API.
+    if (this._weather && this._weather.timestamp && (now - this._weather.timestamp) < this._maximumAge) {
+      outbox.enqueue(WEATHER_DATA_FILE, cbor.encode(this._weather))
+        .catch((e) => console.log("Failed to send cached weather: " + e));
+      return;
+    }
+
+    // Error cooldown — after a failure, skip API calls for a window so we
+    // don't hammer Fitbit's backend during outages or trip rate limits.
+    if (this._lastErrorAt && (now - this._lastErrorAt) < this._errorCooldownMs) {
+      return;
+    }
+
     this._fetch()
-      .then((payload) => outbox.enqueue(WEATHER_DATA_FILE, cbor.encode(payload)))
+      .then((payload) => {
+        this._weather = payload;
+        this._lastErrorAt = 0;
+        return outbox.enqueue(WEATHER_DATA_FILE, cbor.encode(payload));
+      })
       .catch((err) => {
+        this._lastErrorAt = Date.now();
         const message = (err && err.message) || String(err);
         console.log("weather: fetch failed: " + message);
         outbox
