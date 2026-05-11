@@ -1,4 +1,5 @@
 {
+  "version": "1.0.0",
   "scripts": {
     "build": "node --disable-warning=DEP0180 ./node_modules/@fitbit/sdk/bin/fitbit-build.js"
   },
@@ -8,9 +9,9 @@
   "fitbit": {
     "appUUID": "d403c1ce-00d5-4942-a6a2-cfbd67c68489",
     "appType": "clockface",
-    "appDisplayName": "my_first_clock",
+    "appDisplayName": "Battery + Quad Stat Clock",
     "iconFile": "resources/icon.png",
-    "wipeColor": "",
+    "wipeColor": "#ffe000",
     "requestedPermissions": [
       "access_activity",
       "access_location",
@@ -26,7 +27,7 @@
     ],
     "i18n": {
       "en-US": {
-        "name": "my_first_clock"
+        "name": "Battery + Quad Stat Clock"
       }
     },
     "defaultLanguage": "en-US"
