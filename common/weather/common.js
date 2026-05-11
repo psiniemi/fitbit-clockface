@@ -7,7 +7,10 @@ export const WEATHER_ERROR_FILE  = "weather_error.cbor";
 // `MostlyCloudyWithThunderstormsDay.png`). The icon for a given condition
 // is therefore just `condition + ".png"` — no lookup table required.
 //
-// Most icons are meteocons line-style baked yellow at 51×51 with 2x stroke;
-// the `Flurries` snowflake is from lucide; the five thunderstorm variants
-// reuse the original cloud+bolt OWM-style icon because the meteocons
-// thunderstorm is a bare bolt with no cloud.
+// All icons are meteocons line-style baked yellow at 51×51 with 2x stroke,
+// except the `Flurries` snowflake which is from lucide (the meteocons
+// snowflake renders as a double-line outline at small sizes). Thunderstorm
+// variants use meteocons `thunderstorms-overcast` (plain Thunderstorms),
+// `thunderstorms-day` (Day-suffixed enums), and `thunderstorms-night`
+// (Night-suffixed enums) — meteocons' bare-bolt `thunderstorms` lacks the
+// cloud cue and reads poorly at this size.
