@@ -1,7 +1,20 @@
-# my_first_clock — Fitbit clockface
+# Battery + Quad Stat Clock
 
-A custom Fitbit clockface for Versa 3 / Sense (`vulcan` build target). Shows
-time, date, steps, heart rate, battery, and weather.
+A simple, customizable clockface for Fitbit Sense and Versa 3.
+
+Features:
+
+- Battery monitor — color-coded bar across the top shows charge at a glance; different gradient while charging. Fills a gap left by most stock clockfaces.
+- Four configurable corners — set each independently to steps, heart rate, weather (icon + temperature), calories, active minutes, location, or nothing. Adjust in the Fitbit app settings.
+- Custom background — pick any photo from your phone.
+- Native Fitbit weather — uses the built-in weather service. No third-party API keys, no signups. Toggle Celsius and Fahrenheit. Forty weather conditions, each with its own icon.
+- Large central time and date, designed for at-a-glance readability.
+- Battery-conscious — heart-rate sensor activates only when you've assigned it to a corner.
+- Privacy-respecting — all data stays on your device. No external API calls.
+
+Weather icons: meteocons by Bas Milius (MIT) and lucide (ISC).
+
+---
 
 This project was originally developed in [Fitbit Studio][studio], the
 browser-based IDE that Fitbit retired in 2023. The instructions below explain
