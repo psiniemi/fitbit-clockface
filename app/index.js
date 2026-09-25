@@ -68,7 +68,13 @@ for (const slot of SLOTS) {
 
 let cachedWeather = null;
 const hrm = new HeartRateSensor();
-hrm.onreading = () => renderCorners();
+hrm.onreading = () => {
+  for (const slot of SLOTS) {
+    if (mySettings.corners[slot] === "heartRate") {
+      renderCorner(slot);
+    }
+  }
+};
 
 if (mySettings.bg) {
   try {
