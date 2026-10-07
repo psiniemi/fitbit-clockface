@@ -20,9 +20,9 @@ export function colorGradient(fadeFraction, rgbColor1, rgbColor2, rgbColor3) {
     var diffBlue = color2.blue - color1.blue;
 
     var gradient = {
-      red: parseInt(Math.floor(color1.red + (diffRed * fade)), 10),
-      green: parseInt(Math.floor(color1.green + (diffGreen * fade)), 10),
-      blue: parseInt(Math.floor(color1.blue + (diffBlue * fade)), 10),
+      red: Math.floor(color1.red + (diffRed * fade)),
+      green: Math.floor(color1.green + (diffGreen * fade)),
+      blue: Math.floor(color1.blue + (diffBlue * fade)),
     };
     return '#' + componentToHex(gradient.red) + componentToHex(gradient.green) + componentToHex(gradient.blue);
 }
