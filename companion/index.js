@@ -23,7 +23,7 @@ settingsStorage.addEventListener("change", (evt) => {
     weather.setTemperatureUnit(unit);
   } else if (evt.key === "background-image" && evt.newValue) {
     sendBackgroundImage(evt.newValue);
-  } else if (evt.key && evt.key.indexOf("corner-") === 0) {
+  } else if (evt.key && evt.key.startsWith("corner-")) {
     sendCorners();
   }
 });
