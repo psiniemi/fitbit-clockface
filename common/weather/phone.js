@@ -6,13 +6,51 @@ import weather, { WeatherCondition } from "weather";
 import { WEATHER_MESSAGE_KEY, WEATHER_DATA_FILE, WEATHER_ERROR_FILE } from './common.js';
 
 // The runtime returns weatherCondition as a numeric enum value
-// (SunnyDay=1, MostlySunnyDay=2, …). Build the inverse lookup once so the
+// (SunnyDay=1, MostlySunnyDay=2, …). Build the inverse lookup statically so the
 // payload sent to the device carries the string name that matches our
-// resource filenames (e.g. "MostlySunnyDay.png").
-const CONDITION_NAMES = {};
-for (const name in WeatherCondition) {
-  CONDITION_NAMES[WeatherCondition[name]] = name;
-}
+// resource filenames (e.g. "MostlySunnyDay.png") without running a for..in loop on startup.
+const CONDITION_NAMES = {
+  [WeatherCondition.SunnyDay]: "SunnyDay",
+  [WeatherCondition.MostlySunnyDay]: "MostlySunnyDay",
+  [WeatherCondition.PartlySunnyDay]: "PartlySunnyDay",
+  [WeatherCondition.IntermittentCloudsDay]: "IntermittentCloudsDay",
+  [WeatherCondition.HazySunshineDay]: "HazySunshineDay",
+  [WeatherCondition.MostlyCloudyDay]: "MostlyCloudyDay",
+  [WeatherCondition.Cloudy]: "Cloudy",
+  [WeatherCondition.Overcast]: "Overcast",
+  [WeatherCondition.Fog]: "Fog",
+  [WeatherCondition.Showers]: "Showers",
+  [WeatherCondition.MostlyCloudyWithShowersDay]: "MostlyCloudyWithShowersDay",
+  [WeatherCondition.PartlySunnyWithShowersDay]: "PartlySunnyWithShowersDay",
+  [WeatherCondition.Thunderstorms]: "Thunderstorms",
+  [WeatherCondition.MostlyCloudyWithThunderstormsDay]: "MostlyCloudyWithThunderstormsDay",
+  [WeatherCondition.PartlySunnyWithThunderstormsDay]: "PartlySunnyWithThunderstormsDay",
+  [WeatherCondition.Rain]: "Rain",
+  [WeatherCondition.Flurries]: "Flurries",
+  [WeatherCondition.MostlyCloudyWithFlurriesDay]: "MostlyCloudyWithFlurriesDay",
+  [WeatherCondition.PartlySunnyWithFlurriesDay]: "PartlySunnyWithFlurriesDay",
+  [WeatherCondition.Snow]: "Snow",
+  [WeatherCondition.MostlyCloudyWithSnowDay]: "MostlyCloudyWithSnowDay",
+  [WeatherCondition.Ice]: "Ice",
+  [WeatherCondition.Sleet]: "Sleet",
+  [WeatherCondition.FreezingRain]: "FreezingRain",
+  [WeatherCondition.RainAndSnow]: "RainAndSnow",
+  [WeatherCondition.Hot]: "Hot",
+  [WeatherCondition.Cold]: "Cold",
+  [WeatherCondition.Windy]: "Windy",
+  [WeatherCondition.ClearNight]: "ClearNight",
+  [WeatherCondition.MostlyClearNight]: "MostlyClearNight",
+  [WeatherCondition.PartlyCloudyNight]: "PartlyCloudyNight",
+  [WeatherCondition.IntermittentCloudsNight]: "IntermittentCloudsNight",
+  [WeatherCondition.HazyMoonlight]: "HazyMoonlight",
+  [WeatherCondition.MostlyCloudyNight]: "MostlyCloudyNight",
+  [WeatherCondition.PartlyCloudyWithShowersNight]: "PartlyCloudyWithShowersNight",
+  [WeatherCondition.MostlyCloudyWithShowersNight]: "MostlyCloudyWithShowersNight",
+  [WeatherCondition.PartlyCloudyWithThunderstormsNight]: "PartlyCloudyWithThunderstormsNight",
+  [WeatherCondition.MostlyCloudyWithThunderstormsNight]: "MostlyCloudyWithThunderstormsNight",
+  [WeatherCondition.MostlyCloudyWithFlurriesNight]: "MostlyCloudyWithFlurriesNight",
+  [WeatherCondition.MostlyCloudyWithSnowNight]: "MostlyCloudyWithSnowNight",
+};
 
 export default class Weather {
 
